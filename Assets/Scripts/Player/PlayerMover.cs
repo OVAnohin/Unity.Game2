@@ -8,11 +8,13 @@ using UnityEngine.InputSystem;
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed;
+    [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _jumpForce;
 
     private PlayerControls _inputActions;
     private Rigidbody _playerRigidbody;
     private bool _isJumped = false;
+    private float _turnAngle = -10f;
 
     private void Awake()
     {
@@ -40,6 +42,13 @@ public class PlayerMover : MonoBehaviour
     {
         Vector3 movement = Vector3.right * _movementSpeed * Time.deltaTime;
         _playerRigidbody.MovePosition(transform.position + movement);
+    }
+
+    private void TurnThePlayer()
+    {
+        Quaternion turn = _playerRigidbody.rotation * Quaternion.Euler(0, 0, _turnAngle);
+        Quaternion rotation = Quaternion.Slerp(_playerRigidbody.rotation, turn, _rotationSpeed);
+        _playerRigidbody.MoveRotation(rotation);
     }
 
     private void OnJump(InputAction.CallbackContext context)

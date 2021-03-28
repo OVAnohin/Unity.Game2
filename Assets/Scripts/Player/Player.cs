@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public event UnityAction<int> ScoreChanged;
+
+    private int _score = 0;
+
+    private void Start()
     {
-        
+        ScoreChanged?.Invoke(_score);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeCoin()
     {
-        
+        _score += 1;
+        ScoreChanged?.Invoke(_score);
     }
 }
